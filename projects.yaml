@@ -645,6 +645,10 @@ projects:
         - *module_if
         - *module_hic_max32625
         - records/board/max78000fthr.yaml
+    max32625_max32670evkit_if:
+        - *module_if
+        - *module_hic_max32625
+        - records/board/max32670evkit.yaml
     sam3u2c_mkit_dk_dongle_nrf5x_if:
         - *module_if
         - *module_hic_sam3u2c
