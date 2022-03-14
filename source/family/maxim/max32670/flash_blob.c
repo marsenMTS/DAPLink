@@ -29,7 +29,7 @@
 #define FLASH_SECTOR    KB(8)
 
 static const uint32_t flash_algo_blob[] = {
-    0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
+    0xE00ABE00, 
     0x44494975, 0x68826808, 0x0f07f012, 0x2001bf1c, 0x68494770, 0x20006041, 0x486f4770, 0x68004448,
     0xf0216881, 0x60814170, 0x47702000, 0xb510486a, 0x68044448, 0xf8b4f000, 0x68a0b9b0, 0x407ff420,
     0x402af440, 0x68a060a0, 0x0002f040, 0x68a060a0, 0x0f02f010, 0x68a0d1fb, 0x4070f020, 0x6a6060a0,
@@ -60,21 +60,25 @@ static const sector_info_t sectors_info[] = {
 };
 
 static const program_target_t flash = {
-    0x20000021, // Init
-    0x2000003b, // UnInit
-    0x2000004d, // EraseChip
-    0x2000008d, // EraseSector
-    0x200000d1, // ProgramPage
-    0x00000000, // Verify
+    0x20000005, // Init
+    0x2000001f, // UnInit
+    0x20000031, // EraseChip
+    0x20000071, // EraseSector
+    0x200000b5, // ProgramPage
+    0x120000003, // Verify
+
+    // BKPT : start of blob + 1
+    // RSB  : blob start + header + rw data offset
+    // RSP  : stack pointer
     {
-        0x20000001, // BKPT : start of blob + 1
-        0x200001fc, // RSB  : blob start + header + rw data offset
-        0x20000500  // RSP  : stack pointer
+        0x20000001,
+        0x200001e0,
+        0x20000400
     },
 
-    0x20000000 + 0x00000A00, // mem buffer location
-    0x20000000,              // location to write prog_blob in target RAM
-    sizeof(flash_algo_blob), // prog_blob size
-    flash_algo_blob,         // address of prog_blob
-    0x00000400               // ram_to_flash_bytes_to_be_written
+    0x20000000 + 0x00000A00,  // mem buffer location
+    0x20000000,               // location to write prog_blob in target RAM
+    sizeof(flash_algo_blob),   // prog_blob size
+    flash_algo_blob,           // address of prog_blob
+    0x00002000       // ram_to_flash_bytes_to_be_written
 };
